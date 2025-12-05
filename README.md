@@ -55,6 +55,20 @@ npx hardhat run scripts/deploy.js --network <network>
 - Hardhat
 - Ethers.js
 
+## 🚀 Deploying to GitHub
+
+1. Create a new repository on GitHub named `LockedIn`
+2. Run the setup script:
+   ```powershell
+   .\scripts\setup-github.ps1
+   ```
+   Or manually:
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/LockedIn.git
+   git branch -M main
+   git push -u origin main
+   ```
+
 ## 📄 License
 
 MIT

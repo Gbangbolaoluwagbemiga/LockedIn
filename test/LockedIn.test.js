@@ -33,13 +33,15 @@ describe("LockedIn", function () {
       const goal = "I will not buy coffee for 30 days";
       const durationInDays = 30;
 
-      await expect(
-        lockedIn.connect(user1).createCommitment(goal, durationInDays, {
-          value: stakeAmount,
-        })
-      )
+      const tx = await lockedIn.connect(user1).createCommitment(goal, durationInDays, {
+        value: stakeAmount,
+      });
+      
+      await expect(tx)
         .to.emit(lockedIn, "CommitmentCreated")
-        .withArgs(0, user1.address, stakeAmount, goal, anyValue);
+        .withArgs(0, user1.address, stakeAmount, goal, (deadline) => {
+          return deadline > 0;
+        });
 
       const commitment = await lockedIn.getCommitment(0);
       expect(commitment.user).to.equal(user1.address);
@@ -164,7 +166,7 @@ describe("LockedIn", function () {
       
       await expect(lockedIn.connect(user1).unstake(0))
         .to.emit(lockedIn, "StakeUnstaked")
-        .withArgs(0, user1.address, anyValue, true);
+        .withArgs(0, user1.address, (amount) => amount > 0, true);
 
       const finalBalance = await ethers.provider.getBalance(user1.address);
       expect(finalBalance).to.be.gt(initialBalance);
@@ -253,8 +255,4 @@ describe("LockedIn", function () {
   });
 });
 
-// Helper function for anyValue matcher
-function anyValue() {
-  return true;
-}
 
