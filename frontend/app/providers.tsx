@@ -1,7 +1,7 @@
 'use client';
 
 import { createAppKit } from '@reown/appkit/react';
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { WagmiAdapter } from '@reown/appkit-wagmi-adapter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { celo, celoAlfajores } from 'viem/chains';
