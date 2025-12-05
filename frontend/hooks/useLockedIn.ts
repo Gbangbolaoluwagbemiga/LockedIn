@@ -1,7 +1,7 @@
 'use client';
 
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount, useReadContracts } from 'wagmi';
-import { parseEther, formatEther } from 'viem';
+import { parseEther } from 'viem';
 import { LOCKEDIN_ABI, LOCKEDIN_CONTRACT_ADDRESS } from '@/lib/contract';
 import { Commitment } from '@/types';
 import { useMemo } from 'react';
@@ -117,7 +117,7 @@ export function useCommitment(commitmentId: bigint | undefined) {
   });
 
   const commitment: Commitment | null = useMemo(() => {
-    if (!commitmentData || !commitmentData[0]?.result) return null;
+    if (!commitmentData || commitmentData.length < 3 || !commitmentData[0]?.result) return null;
     
     const [commitmentResult, canUnstakeResult, rewardResult] = commitmentData;
     const commitment = commitmentResult.result as any;
@@ -133,8 +133,8 @@ export function useCommitment(commitmentId: bigint | undefined) {
       completed: commitment.completed,
       claimed: commitment.claimed,
       createdAt: commitment.createdAt,
-      canUnstake: canUnstakeResult?.result as boolean || false,
-      estimatedReward: rewardResult?.result as bigint || 0n,
+      canUnstake: (canUnstakeResult?.result as boolean) || false,
+      estimatedReward: (rewardResult?.result as bigint) || 0n,
     };
   }, [commitmentData, commitmentId]);
 
