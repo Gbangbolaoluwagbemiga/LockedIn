@@ -17,14 +17,17 @@ const wagmiAdapter = new WagmiAdapter({
   projectId,
 });
 
-// Create Reown AppKit
+// Get wagmi config
+const wagmiConfig = wagmiAdapter.wagmiConfig;
+
+// Initialize Reown AppKit
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
   metadata: {
     name: 'LockedIn',
     description: 'Lock in your goals by staking CELO',
-    url: typeof window !== 'undefined' ? window.location.origin : 'https://lockedin.xyz',
+    url: 'https://lockedin.xyz',
     icons: [],
   },
   features: {
@@ -33,6 +36,9 @@ createAppKit({
     socials: [],
   },
   themeMode: 'light',
+  themeVariables: {
+    '--w3m-accent': '#9333ea',
+  },
 });
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -49,11 +55,10 @@ export function Providers({ children }: { children: ReactNode }) {
   );
 
   return (
-    <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+    <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         {children}
       </QueryClientProvider>
     </WagmiProvider>
   );
 }
-
