@@ -9,18 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@reown/appkit": "^1.8.14",
-    "@reown/appkit-adapter-wagmi": "^1.8.14",
-    "@tanstack/react-query": "^5.56.0",
-    "@types/lodash": "^4.17.21",
-    "browserslist": "^4.28.1",
-    "caniuse-lite": "^1.0.30001759",
-    "lodash": "^4.17.21",
-    "next": "^14.2.5",
+    "next": "14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "@reown/appkit": "^1.8.14",
+    "@reown/appkit-adapter-wagmi": "^1.8.14",
+    "wagmi": "^2.10.0",
     "viem": "^2.21.0",
-    "wagmi": "^2.10.0"
+    "@tanstack/react-query": "^5.56.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.12",
@@ -32,9 +28,5 @@
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4"
-  },
-  "overrides": {
-    "viem": "$viem",
-    "lodash": "^4.17.21"
   }
 }

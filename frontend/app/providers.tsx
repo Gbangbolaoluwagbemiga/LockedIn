@@ -3,7 +3,7 @@
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { celo, celoAlfajores } from "viem/chains";
+import { celo } from "viem/chains";
 import { createConfig, http } from "wagmi";
 import { createAppKitAdapter } from "@reown/appkit-adapter-wagmi";
 
@@ -16,13 +16,10 @@ const metadata = {
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
-const chains = [celo, celoAlfajores] as const;
-
 const wagmiConfig = createConfig({
-  chains,
+  chains: [celo],
   transports: {
     [celo.id]: http(),
-    [celoAlfajores.id]: http(),
   },
 });
 
@@ -34,12 +31,9 @@ const wagmiAdapter = createAppKitAdapter(wagmiConfig, {
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: chains,
+  networks: [celo],
   defaultNetwork: celo,
   metadata,
-  features: {
-    analytics: true,
-  },
 });
 
 const queryClient = new QueryClient();
