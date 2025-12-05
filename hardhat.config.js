@@ -1,6 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -25,6 +24,7 @@ module.exports = {
       url: "https://alfajores-forno.celo-testnet.org",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 44787,
+      timeout: 60000,
     },
     // Celo Mainnet
     celo: {
