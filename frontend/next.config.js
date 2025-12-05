@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -14,9 +16,16 @@ const nextConfig = {
       };
     }
     
-    // Handle nested node_modules issues
+    // Resolve modules from root first, then nested
+    config.resolve.modules = [
+      path.resolve(__dirname, 'node_modules'),
+      'node_modules',
+    ];
+    
+    // Force resolve lodash from root
     config.resolve.alias = {
       ...config.resolve.alias,
+      'lodash': path.resolve(__dirname, 'node_modules/lodash'),
     };
     
     return config;
