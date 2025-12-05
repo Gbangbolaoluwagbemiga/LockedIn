@@ -42,10 +42,7 @@ module.exports = {
     artifacts: "./artifacts",
   },
   etherscan: {
-    apiKey: {
-      alfajores: process.env.CELOSCAN_API_KEY || "",
-      celo: process.env.CELOSCAN_API_KEY || "",
-    },
+    apiKey: process.env.CELOSCAN_API_KEY || "",
     customChains: [
       {
         network: "alfajores",
