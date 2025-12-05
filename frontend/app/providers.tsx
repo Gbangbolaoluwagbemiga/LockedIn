@@ -5,6 +5,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { celo, celoAlfajores } from "viem/chains";
 import { createConfig, http } from "wagmi";
+import { createAppKitAdapter } from "@reown/appkit-adapter-wagmi";
 
 const projectId = "0587c6b4e5fa71469bb986a836ab8607";
 
@@ -25,8 +26,13 @@ const wagmiConfig = createConfig({
   },
 });
 
+const wagmiAdapter = createAppKitAdapter(wagmiConfig, {
+  projectId,
+  metadata,
+});
+
 createAppKit({
-  adapters: [createAppKit.adapter.wagmi(wagmiConfig)],
+  adapters: [wagmiAdapter],
   projectId,
   networks: chains,
   defaultNetwork: celo,
