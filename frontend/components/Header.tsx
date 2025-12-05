@@ -1,7 +1,7 @@
 'use client';
 
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Lock, Trophy } from 'lucide-react';
+import { ConnectButton } from '@reown/appkit/react';
+import { Lock } from 'lucide-react';
 import Link from 'next/link';
 
 export function Header() {
