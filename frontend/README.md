@@ -17,7 +17,7 @@ A beautiful, modern frontend for the LockedIn commitment contract platform built
 - **TypeScript** - Type-safe development
 - **Tailwind CSS 4** - Modern styling
 - **Wagmi** - React hooks for Ethereum/Celo
-- **RainbowKit** - Beautiful wallet connection UI
+- **Reown AppKit** - Beautiful wallet connection UI (formerly WalletConnect)
 - **Viem** - TypeScript interface for blockchain interactions
 
 ## 📦 Installation
@@ -37,11 +37,14 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
 NEXT_PUBLIC_CONTRACT_ADDRESS=0x...your_deployed_contract_address
 ```
 
-3. Get a WalletConnect Project ID:
+3. Set up Reown (WalletConnect) Project ID:
 
-- Visit [WalletConnect Cloud](https://cloud.walletconnect.com)
-- Create a new project
-- Copy your Project ID to the `.env.local` file
+The Project ID is already configured in the code: `0587c6b4e5fa71469bb986a836ab8607`
+
+If you need to change it, create a `.env.local` file with:
+```env
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=0587c6b4e5fa71469bb986a836ab8607
+```
 
 4. Deploy the contract and update `NEXT_PUBLIC_CONTRACT_ADDRESS`:
 
@@ -103,5 +106,5 @@ Get your Project ID from [WalletConnect Cloud](https://cloud.walletconnect.com) 
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Wagmi Documentation](https://wagmi.sh)
-- [RainbowKit Documentation](https://rainbowkit.com)
+- [Reown AppKit Documentation](https://docs.reown.com/appkit)
 - [Celo Documentation](https://docs.celo.org)
