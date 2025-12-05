@@ -9,7 +9,6 @@
     "deploy": "hardhat run scripts/deploy.js",
     "deploy:alfajores": "hardhat run scripts/deploy.js --network alfajores",
     "deploy:celo": "hardhat run scripts/deploy.js --network celo",
-    "verify:celo": "hardhat verify --network celo",
     "node": "hardhat node"
   },
   "keywords": [
