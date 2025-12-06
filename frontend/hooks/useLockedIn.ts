@@ -56,20 +56,43 @@ export function useLockedIn() {
       console.error('createCommitment function not available');
       return;
     }
+
+    if (!address) {
+      console.error('No wallet address connected');
+      alert('Please connect your wallet first');
+      return;
+    }
+
+    if (!chain) {
+      console.error('No chain detected');
+      alert('Please make sure your wallet is connected to Celo Mainnet');
+      return;
+    }
+
+    if (chain.id !== 42220) {
+      console.error('Wrong network. Current chain ID:', chain.id);
+      alert(`Please switch to Celo Mainnet (Chain ID: 42220). Currently on Chain ID: ${chain.id}`);
+      return;
+    }
     
     try {
       console.log('Creating commitment:', { goal, durationInDays, stakeAmount });
       console.log('Contract address:', LOCKEDIN_CONTRACT_ADDRESS);
+      console.log('Connected address:', address);
+      console.log('Chain:', chain);
       
-      createCommitment({
+      const result = createCommitment({
         address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
         abi: LOCKEDIN_ABI,
         functionName: 'createCommitment',
         args: [goal, BigInt(durationInDays)],
         value: parseEther(stakeAmount),
       });
+      
+      console.log('Transaction result:', result);
     } catch (error) {
       console.error('Error creating commitment:', error);
+      alert('Transaction failed: ' + (error as Error).message);
       throw error;
     }
   };
