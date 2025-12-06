@@ -4,10 +4,10 @@ import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAcc
 import { parseEther } from 'viem';
 import { LOCKEDIN_ABI, LOCKEDIN_CONTRACT_ADDRESS } from '@/lib/contract';
 import { Commitment } from '@/types';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 export function useLockedIn() {
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
 
   // Read total reward pool
   const { data: totalRewardPool } = useReadContract({
@@ -33,8 +33,15 @@ export function useLockedIn() {
   });
 
   // Create commitment
-  const { writeContract: createCommitment, data: createHash, isPending: isCreating } = useWriteContract();
+  const { writeContract: createCommitment, data: createHash, isPending: isCreating, error: createError } = useWriteContract();
   const { isLoading: isConfirmingCreate } = useWaitForTransactionReceipt({ hash: createHash });
+
+  // Log errors
+  useEffect(() => {
+    if (createError) {
+      console.error('Create commitment error:', createError);
+    }
+  }, [createError]);
 
   // Mark completed
   const { writeContract: markCompleted, data: completeHash, isPending: isMarking } = useWriteContract();
