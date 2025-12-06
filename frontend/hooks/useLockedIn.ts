@@ -111,7 +111,7 @@ export function useLockedIn() {
         functionName: 'createCommitment',
         args: [goal, BigInt(durationInDays)],
         value: parseEther(stakeAmount),
-        chainId: 42220,
+        gas: BigInt(300000), // Add explicit gas limit
       }, {
         onSuccess: (hash) => {
           console.log('Transaction sent! Hash:', hash);
