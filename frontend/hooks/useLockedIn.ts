@@ -11,21 +11,21 @@ export function useLockedIn() {
   const { address, chain } = useAccount();
 
   // Read total reward pool
-  const { data: totalRewardPool } = useReadContract({
+  const { data: totalRewardPool, refetch: refetchRewardPool } = useReadContract({
     address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
     abi: LOCKEDIN_ABI,
     functionName: 'totalRewardPool',
   });
 
   // Read total commitments count
-  const { data: totalCommitments } = useReadContract({
+  const { data: totalCommitments, refetch: refetchTotalCommitments } = useReadContract({
     address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
     abi: LOCKEDIN_ABI,
     functionName: 'getTotalCommitments',
   });
 
   // Get user commitments
-  const { data: userCommitmentIds } = useReadContract({
+  const { data: userCommitmentIds, refetch: refetchUserCommitments } = useReadContract({
     address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
     abi: LOCKEDIN_ABI,
     functionName: 'getUserCommitments',
