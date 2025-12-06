@@ -173,18 +173,15 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {commitments.map((id) => (
-                <CommitmentCardWrapper
-                  key={id.toString()}
-                  commitmentId={id}
-                  address={address}
-                  onMarkComplete={markCompleted}
-                  onUnstake={unstake}
-                  isLoading={isMarking || isUnstaking}
-                />
-              ))}
-            </div>
+            <FilteredCommitmentsList
+              commitments={commitments}
+              filterBy={filterBy}
+              sortBy={sortBy}
+              address={address}
+              onMarkComplete={markCompleted}
+              onUnstake={unstake}
+              isLoading={isMarking || isUnstaking}
+            />
           )}
         </div>
       </main>
