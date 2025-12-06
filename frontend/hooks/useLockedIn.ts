@@ -177,7 +177,7 @@ export function useLockedIn() {
 }
 
 export function useCommitment(commitmentId: bigint | undefined) {
-  const { data: commitmentData } = useReadContracts({
+  const { data: commitmentData, refetch } = useReadContracts({
     contracts: commitmentId !== undefined ? [
       {
         address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
@@ -225,4 +225,3 @@ export function useCommitment(commitmentId: bigint | undefined) {
 
   return { commitment };
 }
-
