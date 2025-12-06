@@ -232,6 +232,53 @@ function CommitmentCardWrapper({
   );
 }
 
+// Filterable commitment card that checks status
+function FilterableCommitmentCard({
+  commitmentId,
+  filterBy,
+  address,
+  onMarkComplete,
+  onUnstake,
+  isLoading,
+}: {
+  commitmentId: bigint;
+  filterBy: 'all' | 'active' | 'completed' | 'expired';
+  address: string | undefined;
+  onMarkComplete: (id: bigint) => void;
+  onUnstake: (id: bigint) => void;
+  isLoading: boolean;
+}) {
+  const { commitment } = useCommitment(commitmentId);
+
+  if (!commitment) {
+    return null; // Loading or doesn't exist
+  }
+
+  // Check status
+  const now = Date.now();
+  const deadline = Number(commitment.deadline) * 1000;
+  const isExpired = deadline < now;
+  const isActive = !commitment.completed && !isExpired;
+  const isCompleted = commitment.completed;
+
+  // Filter logic
+  if (filterBy === 'active' && !isActive) return null;
+  if (filterBy === 'completed' && !isCompleted) return null;
+  if (filterBy === 'expired' && !isExpired) return null;
+
+  const isOwner = address && commitment.user.toLowerCase() === address.toLowerCase();
+
+  return (
+    <CommitmentCard
+      commitment={commitment}
+      onMarkComplete={onMarkComplete}
+      onUnstake={onUnstake}
+      isLoading={isLoading}
+      isOwner={isOwner}
+    />
+  );
+}
+
 // Filter and sort helper component
 function FilteredCommitmentsList({
   commitments,
@@ -250,31 +297,29 @@ function FilteredCommitmentsList({
   onUnstake: (id: bigint) => void;
   isLoading: boolean;
 }) {
-  // This will hold commitment data for sorting
   const [sortedCommitments, setSortedCommitments] = useState<bigint[]>(commitments);
 
   useEffect(() => {
     let filtered = [...commitments];
 
-    // Sort based on sortBy (we'll do basic sorting by ID for now, 
-    // in production you'd fetch full data and sort by actual values)
+    // Sort based on sortBy
     if (sortBy === 'newest') {
       filtered.reverse();
     } else if (sortBy === 'oldest') {
       // Already in order
     }
     // For stake sorting, we'd need to fetch all commitment data first
-    // For now, just show in order
 
     setSortedCommitments(filtered);
-  }, [commitments, sortBy, filterBy]);
+  }, [commitments, sortBy]);
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {sortedCommitments.map((id) => (
-        <CommitmentCardWrapper
+        <FilterableCommitmentCard
           key={id.toString()}
           commitmentId={id}
+          filterBy={filterBy}
           address={address}
           onMarkComplete={onMarkComplete}
           onUnstake={onUnstake}
