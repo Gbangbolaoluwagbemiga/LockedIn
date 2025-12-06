@@ -138,6 +138,7 @@ export function useLockedIn() {
     isCreating: isCreating || isConfirmingCreate,
     isMarking: isMarking || isConfirmingComplete,
     isUnstaking: isUnstaking || isConfirmingUnstake,
+    createHash,
   };
 }
 
