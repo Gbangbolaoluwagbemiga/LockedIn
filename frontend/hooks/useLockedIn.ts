@@ -49,8 +49,12 @@ export function useLockedIn() {
   useEffect(() => {
     if (isCreateSuccess) {
       toast.success('🎉 Commitment created successfully!');
+      // Refetch all data
+      refetchRewardPool();
+      refetchTotalCommitments();
+      refetchUserCommitments();
     }
-  }, [isCreateSuccess]);
+  }, [isCreateSuccess, refetchRewardPool, refetchTotalCommitments, refetchUserCommitments]);
 
   // Mark completed
   const { writeContract: markCompleted, data: completeHash, isPending: isMarking } = useWriteContract();
@@ -60,8 +64,10 @@ export function useLockedIn() {
   useEffect(() => {
     if (isCompleteSuccess) {
       toast.success('✅ Commitment marked as complete!');
+      // Refetch user commitments
+      refetchUserCommitments();
     }
-  }, [isCompleteSuccess]);
+  }, [isCompleteSuccess, refetchUserCommitments]);
 
   // Unstake
   const { writeContract: unstake, data: unstakeHash, isPending: isUnstaking } = useWriteContract();
@@ -71,8 +77,11 @@ export function useLockedIn() {
   useEffect(() => {
     if (isUnstakeSuccess) {
       toast.success('💰 Funds unstaked successfully!');
+      // Refetch all data
+      refetchRewardPool();
+      refetchUserCommitments();
     }
-  }, [isUnstakeSuccess]);
+  }, [isUnstakeSuccess, refetchRewardPool, refetchUserCommitments]);
 
   const handleCreateCommitment = async (goal: string, durationInDays: number, stakeAmount: string) => {
     if (!createCommitment) {
