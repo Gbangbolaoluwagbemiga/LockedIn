@@ -53,6 +53,18 @@ export default function Home() {
     }
   };
 
+  const handleMarkComplete = async (id: bigint) => {
+    await markCompleted(id);
+    // Trigger refetch after marking complete
+    setTimeout(() => setRefetchTrigger(prev => prev + 1), 3000);
+  };
+
+  const handleUnstake = async (id: bigint) => {
+    await unstake(id);
+    // Trigger refetch after unstaking
+    setTimeout(() => setRefetchTrigger(prev => prev + 1), 3000);
+  };
+
   // Close modal and refetch when create hash is available
   useEffect(() => {
     if (createHash) {
@@ -180,8 +192,8 @@ export default function Home() {
               filterBy={filterBy}
               sortBy={sortBy}
               address={address}
-              onMarkComplete={markCompleted}
-              onUnstake={unstake}
+              onMarkComplete={handleMarkComplete}
+              onUnstake={handleUnstake}
               isLoading={isMarking || isUnstaking}
               refetchTrigger={refetchTrigger}
             />
@@ -329,7 +341,7 @@ function FilteredCommitmentsList({
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {sortedCommitments.map((id) => (
         <FilterableCommitmentCard
-          key={id.toString()}
+          key={`${id.toString()}-${refetchTrigger}`}
           commitmentId={id}
           filterBy={filterBy}
           address={address}
