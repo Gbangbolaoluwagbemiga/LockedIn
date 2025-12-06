@@ -1,0 +1,27 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="180" height="180" fill="url(#gradient)"/>
+  
+  <!-- Lock Body -->
+  <rect x="60" y="85" width="60" height="50" rx="7" fill="white" opacity="0.95"/>
+  
+  <!-- Lock Shackle -->
+  <path d="M 70 85 L 70 63 Q 70 42 90 42 Q 110 42 110 63 L 110 85" 
+        stroke="white" 
+        stroke-width="14" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.95"/>
+  
+  <!-- Keyhole -->
+  <circle cx="90" cy="102" r="6" fill="url(#gradient)"/>
+  <rect x="86" y="102" width="8" height="14" rx="2" fill="url(#gradient)"/>
+</svg>
+

@@ -12,6 +12,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "LockedIn - Commitment Contract Platform",
   description: "Lock in your goals by staking CELO. Earn rewards from those who fail to complete their commitments.",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/icon.svg', sizes: '180x180', type: 'image/svg+xml' },
+    ],
+  },
 };
 
 export default function RootLayout({
