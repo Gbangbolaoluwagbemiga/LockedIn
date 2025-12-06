@@ -45,15 +45,26 @@ export function useLockedIn() {
   const { isLoading: isConfirmingUnstake } = useWaitForTransactionReceipt({ hash: unstakeHash });
 
   const handleCreateCommitment = async (goal: string, durationInDays: number, stakeAmount: string) => {
-    if (!createCommitment) return;
+    if (!createCommitment) {
+      console.error('createCommitment function not available');
+      return;
+    }
     
-    createCommitment({
-      address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
-      abi: LOCKEDIN_ABI,
-      functionName: 'createCommitment',
-      args: [goal, BigInt(durationInDays)],
-      value: parseEther(stakeAmount),
-    });
+    try {
+      console.log('Creating commitment:', { goal, durationInDays, stakeAmount });
+      console.log('Contract address:', LOCKEDIN_CONTRACT_ADDRESS);
+      
+      createCommitment({
+        address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
+        abi: LOCKEDIN_ABI,
+        functionName: 'createCommitment',
+        args: [goal, BigInt(durationInDays)],
+        value: parseEther(stakeAmount),
+      });
+    } catch (error) {
+      console.error('Error creating commitment:', error);
+      throw error;
+    }
   };
 
   const handleMarkCompleted = async (commitmentId: bigint) => {

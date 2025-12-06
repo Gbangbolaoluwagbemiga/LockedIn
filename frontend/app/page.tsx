@@ -41,8 +41,14 @@ export default function Home() {
   }, [totalCommitments]);
 
   const handleCreate = async (goal: string, duration: number, stake: string) => {
-    await createCommitment(goal, duration, stake);
-    setIsModalOpen(false);
+    try {
+      console.log('handleCreate called:', { goal, duration, stake });
+      await createCommitment(goal, duration, stake);
+      // Don't close modal immediately - let transaction complete
+    } catch (error) {
+      console.error('Error in handleCreate:', error);
+      alert('Error creating commitment. Check console for details.');
+    }
   };
 
   return (
