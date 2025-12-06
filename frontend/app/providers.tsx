@@ -24,16 +24,15 @@ const wagmiConfig = wagmiAdapter.wagmiConfig;
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
+  networks: [celoAlfajores, celo],
   metadata: {
     name: 'LockedIn',
     description: 'Lock in your goals by staking CELO',
     url: 'https://lockedin.xyz',
-    icons: [],
+    icons: ['https://lockedin.xyz/icon.png'],
   },
   features: {
     analytics: true,
-    email: false,
-    socials: [],
   },
   themeMode: 'light',
   themeVariables: {
