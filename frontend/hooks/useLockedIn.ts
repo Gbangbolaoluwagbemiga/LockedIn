@@ -10,6 +10,13 @@ import toast from 'react-hot-toast';
 export function useLockedIn() {
   const { address, chain } = useAccount();
 
+  // Read paused state
+  const { data: isPaused } = useReadContract({
+    address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
+    abi: LOCKEDIN_ABI,
+    functionName: 'paused',
+  });
+
   // Read total reward pool
   const { data: totalRewardPool, refetch: refetchRewardPool } = useReadContract({
     address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
@@ -167,6 +174,7 @@ export function useLockedIn() {
   };
 
   return {
+    isPaused: isPaused || false,
     totalRewardPool: totalRewardPool || 0n,
     totalCommitments: totalCommitments || 0n,
     userCommitmentIds: userCommitmentIds || [],

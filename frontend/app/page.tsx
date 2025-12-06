@@ -14,6 +14,7 @@ import { formatCelo } from '@/lib/utils';
 export default function Home() {
   const { address } = useAccount();
   const {
+    isPaused,
     totalRewardPool,
     totalCommitments,
     createCommitment,
@@ -129,9 +130,9 @@ export default function Home() {
           />
           <StatsCard
             title="Platform Status"
-            value="Active"
+            value={isPaused ? "Paused" : "Active"}
             icon={<Lock className="h-6 w-6 text-white" />}
-            gradient="from-purple-500 to-pink-500"
+            gradient={isPaused ? "from-red-500 to-orange-500" : "from-green-500 to-emerald-500"}
           />
         </div>
 
