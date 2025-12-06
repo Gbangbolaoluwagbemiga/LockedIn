@@ -4,7 +4,7 @@ import { createAppKit } from '@reown/appkit/react';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
-import { celo, celoAlfajores } from 'viem/chains';
+import { celo, celoAlfajores } from 'wagmi/chains';
 import { ReactNode, useState } from 'react';
 
 // Reown (WalletConnect) Project ID
@@ -13,7 +13,7 @@ const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '0587c6b4e
 // Create wagmi adapter
 const wagmiAdapter = new WagmiAdapter({
   ssr: true,
-  chains: [celoAlfajores, celo],
+  networks: [celoAlfajores, celo],
   projectId,
 });
 
