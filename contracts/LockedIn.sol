@@ -62,9 +62,6 @@ contract LockedIn is Pausable, Ownable {
     );
     
     event RewardPoolUpdated(uint256 newTotal);
-    
-    event Paused(address account);
-    event Unpaused(address account);
 
     constructor() Ownable(msg.sender) {
         // Contract is not paused on deployment
