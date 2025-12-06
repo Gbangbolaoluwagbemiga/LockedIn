@@ -1,6 +1,6 @@
 'use client';
 
-import { ConnectButton } from '@reown/appkit/react';
+import { AppKitConnectButton } from '@reown/appkit/react';
 import { Lock } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,7 +30,7 @@ export function Header() {
           </Link>
         </nav>
 
-        <ConnectButton />
+        <AppKitConnectButton />
       </div>
     </header>
   );
