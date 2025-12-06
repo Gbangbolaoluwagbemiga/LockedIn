@@ -5,6 +5,7 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { celo } from 'wagmi/chains';
+import { http } from 'viem';
 import { ReactNode, useState } from 'react';
 
 // Reown (WalletConnect) Project ID
@@ -18,11 +19,27 @@ const getAppUrl = () => {
   return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 };
 
-// Create wagmi adapter - Celo Mainnet only
+// Custom Celo chain config with better RPC endpoints
+const celoWithCustomRpc = {
+  ...celo,
+  rpcUrls: {
+    default: {
+      http: ['https://celo.drpc.org', 'https://forno.celo.org'],
+    },
+    public: {
+      http: ['https://celo.drpc.org', 'https://forno.celo.org'],
+    },
+  },
+};
+
+// Create wagmi adapter with custom transport
 const wagmiAdapter = new WagmiAdapter({
   ssr: true,
-  networks: [celo],
+  networks: [celoWithCustomRpc as any],
   projectId,
+  transports: {
+    [celo.id]: http('https://celo.drpc.org'),
+  },
 });
 
 // Get wagmi config
@@ -32,7 +49,7 @@ const wagmiConfig = wagmiAdapter.wagmiConfig;
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [celo],
+  networks: [celoWithCustomRpc as any],
   metadata: {
     name: 'LockedIn',
     description: 'Lock in your goals by staking CELO',
