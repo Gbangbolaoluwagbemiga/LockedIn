@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 /**
  * @title LockedIn
- * @dev A decentralized commitment contract platform where users stake ETH to commit to goals
- * @notice Users can stake ETH, set commitment goals, and earn rewards from failed commitments
+ * @dev A decentralized commitment contract platform where users stake CELO to commit to goals
+ * @notice Users can stake CELO, set commitment goals, and earn rewards from failed commitments
+ * @notice Contract can be paused by owner for emergency situations
  */
-contract LockedIn {
+contract LockedIn is Pausable, Ownable {
     // Struct to store commitment details
     struct Commitment {
         address user;           // Address of the user who created the commitment
@@ -58,6 +62,27 @@ contract LockedIn {
     );
     
     event RewardPoolUpdated(uint256 newTotal);
+    
+    event Paused(address account);
+    event Unpaused(address account);
+
+    constructor() Ownable(msg.sender) {
+        // Contract is not paused on deployment
+    }
+
+    /**
+     * @dev Pause the contract (only owner)
+     */
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    /**
+     * @dev Unpause the contract (only owner)
+     */
+    function unpause() external onlyOwner {
+        _unpause();
+    }
 
     /**
      * @dev Create a new commitment by staking ETH
@@ -68,7 +93,7 @@ contract LockedIn {
     function createCommitment(
         string memory _goal,
         uint256 _durationInDays
-    ) external payable returns (uint256) {
+    ) external payable whenNotPaused returns (uint256) {
         require(msg.value > 0, "LockedIn: Stake amount must be greater than 0");
         require(_durationInDays > 0, "LockedIn: Duration must be greater than 0");
         require(bytes(_goal).length > 0, "LockedIn: Goal description cannot be empty");
@@ -103,7 +128,7 @@ contract LockedIn {
      * @dev Mark a commitment as completed (only by the creator)
      * @param _commitmentId The ID of the commitment to mark as completed
      */
-    function markCompleted(uint256 _commitmentId) external {
+    function markCompleted(uint256 _commitmentId) external whenNotPaused {
         Commitment storage commitment = commitments[_commitmentId];
         
         require(commitment.user == msg.sender, "LockedIn: Only creator can mark as completed");
@@ -120,7 +145,7 @@ contract LockedIn {
      * @param _commitmentId The ID of the commitment to unstake from
      * @notice If goal is completed, user gets stake back + rewards. If failed, stake goes to reward pool.
      */
-    function unstake(uint256 _commitmentId) external {
+    function unstake(uint256 _commitmentId) external whenNotPaused {
         Commitment storage commitment = commitments[_commitmentId];
         
         require(commitment.user == msg.sender, "LockedIn: Only creator can unstake");
