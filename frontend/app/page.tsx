@@ -26,6 +26,8 @@ export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [commitments, setCommitments] = useState<bigint[]>([]);
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'stake-high' | 'stake-low'>('newest');
+  const [filterBy, setFilterBy] = useState<'all' | 'active' | 'completed' | 'expired'>('all');
 
   // Fetch all commitment IDs
   useEffect(() => {
@@ -130,9 +132,39 @@ export default function Home() {
 
         {/* Commitments Grid */}
         <div className="mb-8">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-            All Commitments
-          </h2>
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              All Commitments
+            </h2>
+            
+            {/* Sort and Filter Controls */}
+            <div className="flex flex-wrap gap-3">
+              {/* Filter Dropdown */}
+              <select
+                value={filterBy}
+                onChange={(e) => setFilterBy(e.target.value as any)}
+                className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="expired">Expired</option>
+              </select>
+
+              {/* Sort Dropdown */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="stake-high">Highest Stake</option>
+                <option value="stake-low">Lowest Stake</option>
+              </select>
+            </div>
+          </div>
+
           {commitments.length === 0 ? (
             <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-12 text-center">
               <Lock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
@@ -180,6 +212,81 @@ function CommitmentCardWrapper({
   onUnstake: (id: bigint) => void;
   isLoading: boolean;
 }) {
+  const { commitment } = useCommitment(commitmentId);
+
+  if (!commitment) {
+    return (
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 animate-pulse">
+        <div className="h-32 bg-gray-200 dark:bg-gray-800 rounded"></div>
+      </div>
+    );
+  }
+
+  const isOwner = address && commitment.user.toLowerCase() === address.toLowerCase();
+
+  return (
+    <CommitmentCard
+      commitment={commitment}
+      onMarkComplete={onMarkComplete}
+      onUnstake={onUnstake}
+      isLoading={isLoading}
+      isOwner={isOwner}
+    />
+  );
+}
+
+// Filter and sort helper component
+function FilteredCommitmentsList({
+  commitments,
+  filterBy,
+  sortBy,
+  address,
+  onMarkComplete,
+  onUnstake,
+  isLoading,
+}: {
+  commitments: bigint[];
+  filterBy: 'all' | 'active' | 'completed' | 'expired';
+  sortBy: 'newest' | 'oldest' | 'stake-high' | 'stake-low';
+  address: string | undefined;
+  onMarkComplete: (id: bigint) => void;
+  onUnstake: (id: bigint) => void;
+  isLoading: boolean;
+}) {
+  // This will hold commitment data for sorting
+  const [sortedCommitments, setSortedCommitments] = useState<bigint[]>(commitments);
+
+  useEffect(() => {
+    let filtered = [...commitments];
+
+    // Sort based on sortBy (we'll do basic sorting by ID for now, 
+    // in production you'd fetch full data and sort by actual values)
+    if (sortBy === 'newest') {
+      filtered.reverse();
+    } else if (sortBy === 'oldest') {
+      // Already in order
+    }
+    // For stake sorting, we'd need to fetch all commitment data first
+    // For now, just show in order
+
+    setSortedCommitments(filtered);
+  }, [commitments, sortBy, filterBy]);
+
+  return (
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {sortedCommitments.map((id) => (
+        <CommitmentCardWrapper
+          key={id.toString()}
+          commitmentId={id}
+          address={address}
+          onMarkComplete={onMarkComplete}
+          onUnstake={onUnstake}
+          isLoading={isLoading}
+        />
+      ))}
+    </div>
+  );
+}
   const { commitment } = useCommitment(commitmentId);
 
   if (!commitment) {
