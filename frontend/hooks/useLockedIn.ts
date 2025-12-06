@@ -64,8 +64,10 @@ export function useLockedIn() {
   useEffect(() => {
     if (isCompleteSuccess) {
       toast.success('✅ Commitment marked as complete!');
-      // Refetch user commitments
-      refetchUserCommitments();
+      // Refetch user commitments after a brief delay
+      setTimeout(() => {
+        refetchUserCommitments();
+      }, 2000);
     }
   }, [isCompleteSuccess, refetchUserCommitments]);
 
@@ -77,9 +79,11 @@ export function useLockedIn() {
   useEffect(() => {
     if (isUnstakeSuccess) {
       toast.success('💰 Funds unstaked successfully!');
-      // Refetch all data
-      refetchRewardPool();
-      refetchUserCommitments();
+      // Refetch all data after a brief delay
+      setTimeout(() => {
+        refetchRewardPool();
+        refetchUserCommitments();
+      }, 2000);
     }
   }, [isUnstakeSuccess, refetchRewardPool, refetchUserCommitments]);
 
