@@ -4,6 +4,7 @@ import { Header } from '@/components/Header';
 import { StatsCard } from '@/components/StatsCard';
 import { CommitmentCard } from '@/components/CommitmentCard';
 import { CreateCommitmentModal } from '@/components/CreateCommitmentModal';
+import { AdminPanel } from '@/components/AdminPanel';
 import { useLockedIn, useCommitment } from '@/hooks/useLockedIn';
 import { useAccount } from 'wagmi';
 import { Plus, Trophy, Users, Lock } from 'lucide-react';
@@ -98,6 +99,9 @@ export default function Home() {
       )}
 
       <main className="container mx-auto px-4 py-8">
+        {/* Admin Panel - Only visible to owner */}
+        <AdminPanel />
+
         {/* Hero Section */}
         <div className="mb-12 text-center">
           <h1 className="mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-5xl font-bold text-transparent">
