@@ -44,7 +44,8 @@ export default function Home() {
     try {
       console.log('handleCreate called:', { goal, duration, stake });
       await createCommitment(goal, duration, stake);
-      // Don't close modal immediately - let transaction complete
+      // Modal will close after transaction is confirmed
+      setTimeout(() => setIsModalOpen(false), 1000);
     } catch (error) {
       console.error('Error in handleCreate:', error);
       alert('Error creating commitment. Check console for details.');
