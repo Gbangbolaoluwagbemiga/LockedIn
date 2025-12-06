@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {}, // Empty config to allow webpack config
+  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   webpack: (config) => {
+    // Resolve optional peer dependencies
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      porto: false,
+    };
+    
     // Ignore test files that are accidentally included by dependencies
     config.plugins.push(
       new (require('webpack').IgnorePlugin)({
