@@ -4,16 +4,24 @@ import { createAppKit } from '@reown/appkit/react';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
-import { celo, celoAlfajores } from 'wagmi/chains';
+import { celo } from 'wagmi/chains';
 import { ReactNode, useState } from 'react';
 
 // Reown (WalletConnect) Project ID
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '0587c6b4e5fa71469bb986a836ab8607';
 
-// Create wagmi adapter - Celo Mainnet first (primary network)
+// Get the current URL for metadata
+const getAppUrl = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+  return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+};
+
+// Create wagmi adapter - Celo Mainnet only
 const wagmiAdapter = new WagmiAdapter({
   ssr: true,
-  networks: [celo], // Only Celo mainnet
+  networks: [celo],
   projectId,
 });
 
@@ -24,12 +32,12 @@ const wagmiConfig = wagmiAdapter.wagmiConfig;
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [celo], // Only Celo mainnet
+  networks: [celo],
   metadata: {
     name: 'LockedIn',
     description: 'Lock in your goals by staking CELO',
-    url: 'https://lockedin.xyz',
-    icons: ['https://lockedin.xyz/icon.png'],
+    url: getAppUrl(),
+    icons: [`${getAppUrl()}/icon.png`],
   },
   features: {
     analytics: true,
