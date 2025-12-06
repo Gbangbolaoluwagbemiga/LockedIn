@@ -9,17 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "next": "16.0.7",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "wagmi": "^2.12.0",
-    "viem": "^2.21.0",
     "@reown/appkit": "^1.5.0",
     "@reown/appkit-adapter-wagmi": "^1.5.0",
     "@tanstack/react-query": "^5.59.0",
+    "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.454.0",
-    "clsx": "^2.1.1"
+    "next": "16.0.7",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "viem": "^2.21.0",
+    "wagmi": "^2.12.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -28,10 +28,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
+    "null-loader": "^4.0.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
     "tap": "^18.0.0",
     "tape": "^5.8.0",
+    "typescript": "^5",
     "why-is-node-running": "^2.2.2"
   }
 }
