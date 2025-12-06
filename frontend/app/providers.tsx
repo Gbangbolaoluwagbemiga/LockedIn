@@ -10,10 +10,10 @@ import { ReactNode, useState } from 'react';
 // Reown (WalletConnect) Project ID
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '0587c6b4e5fa71469bb986a836ab8607';
 
-// Create wagmi adapter
+// Create wagmi adapter - Celo Mainnet first (primary network)
 const wagmiAdapter = new WagmiAdapter({
   ssr: true,
-  networks: [celoAlfajores, celo],
+  networks: [celo], // Only Celo mainnet
   projectId,
 });
 
@@ -24,7 +24,7 @@ const wagmiConfig = wagmiAdapter.wagmiConfig;
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [celoAlfajores, celo],
+  networks: [celo], // Only Celo mainnet
   metadata: {
     name: 'LockedIn',
     description: 'Lock in your goals by staking CELO',
