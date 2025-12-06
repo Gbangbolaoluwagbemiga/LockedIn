@@ -35,7 +35,7 @@ export function useLockedIn() {
 
   // Create commitment
   const { writeContract: createCommitment, data: createHash, isPending: isCreating, error: createError } = useWriteContract();
-  const { isLoading: isConfirmingCreate } = useWaitForTransactionReceipt({ hash: createHash });
+  const { isLoading: isConfirmingCreate, isSuccess: isCreateSuccess } = useWaitForTransactionReceipt({ hash: createHash });
 
   // Log errors
   useEffect(() => {
@@ -45,13 +45,34 @@ export function useLockedIn() {
     }
   }, [createError]);
 
+  // Success notification for create
+  useEffect(() => {
+    if (isCreateSuccess) {
+      toast.success('🎉 Commitment created successfully!');
+    }
+  }, [isCreateSuccess]);
+
   // Mark completed
   const { writeContract: markCompleted, data: completeHash, isPending: isMarking } = useWriteContract();
-  const { isLoading: isConfirmingComplete } = useWaitForTransactionReceipt({ hash: completeHash });
+  const { isLoading: isConfirmingComplete, isSuccess: isCompleteSuccess } = useWaitForTransactionReceipt({ hash: completeHash });
+
+  // Success notification for mark complete
+  useEffect(() => {
+    if (isCompleteSuccess) {
+      toast.success('✅ Commitment marked as complete!');
+    }
+  }, [isCompleteSuccess]);
 
   // Unstake
   const { writeContract: unstake, data: unstakeHash, isPending: isUnstaking } = useWriteContract();
-  const { isLoading: isConfirmingUnstake } = useWaitForTransactionReceipt({ hash: unstakeHash });
+  const { isLoading: isConfirmingUnstake, isSuccess: isUnstakeSuccess } = useWaitForTransactionReceipt({ hash: unstakeHash });
+
+  // Success notification for unstake
+  useEffect(() => {
+    if (isUnstakeSuccess) {
+      toast.success('💰 Funds unstaked successfully!');
+    }
+  }, [isUnstakeSuccess]);
 
   const handleCreateCommitment = async (goal: string, durationInDays: number, stakeAmount: string) => {
     if (!createCommitment) {
