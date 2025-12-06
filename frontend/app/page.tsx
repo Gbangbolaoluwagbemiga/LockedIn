@@ -284,6 +284,20 @@ function FilteredCommitmentsList({
     </div>
   );
 }
+
+function CommitmentCardWrapper({
+  commitmentId,
+  address,
+  onMarkComplete,
+  onUnstake,
+  isLoading,
+}: {
+  commitmentId: bigint;
+  address: string | undefined;
+  onMarkComplete: (id: bigint) => void;
+  onUnstake: (id: bigint) => void;
+  isLoading: boolean;
+}) {
   const { commitment } = useCommitment(commitmentId);
 
   if (!commitment) {
