@@ -5,6 +5,7 @@ import { parseEther } from 'viem';
 import { LOCKEDIN_ABI, LOCKEDIN_CONTRACT_ADDRESS } from '@/lib/contract';
 import { Commitment } from '@/types';
 import { useMemo, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export function useLockedIn() {
   const { address, chain } = useAccount();
@@ -40,6 +41,7 @@ export function useLockedIn() {
   useEffect(() => {
     if (createError) {
       console.error('Create commitment error:', createError);
+      toast.error('Transaction failed: ' + createError.message);
     }
   }, [createError]);
 
@@ -54,24 +56,25 @@ export function useLockedIn() {
   const handleCreateCommitment = async (goal: string, durationInDays: number, stakeAmount: string) => {
     if (!createCommitment) {
       console.error('createCommitment function not available');
+      toast.error('Wallet connection error. Please refresh and try again.');
       return;
     }
 
     if (!address) {
       console.error('No wallet address connected');
-      alert('Please connect your wallet first');
+      toast.error('Please connect your wallet first');
       return;
     }
 
     if (!chain) {
       console.error('No chain detected');
-      alert('Please make sure your wallet is connected to Celo Mainnet');
+      toast.error('Please make sure your wallet is connected to Celo Mainnet');
       return;
     }
 
     if (chain.id !== 42220) {
       console.error('Wrong network. Current chain ID:', chain.id);
-      alert(`Please switch to Celo Mainnet (Chain ID: 42220). Currently on Chain ID: ${chain.id}`);
+      toast.error(`Please switch to Celo Mainnet. Currently on wrong network.`);
       return;
     }
     
@@ -91,17 +94,18 @@ export function useLockedIn() {
       }, {
         onSuccess: (hash) => {
           console.log('Transaction sent! Hash:', hash);
+          toast.success('Transaction sent! Waiting for confirmation...');
         },
         onError: (error) => {
           console.error('Transaction error:', error);
-          alert('Transaction failed: ' + error.message);
+          toast.error('Transaction failed: ' + error.message);
         },
       });
       
       console.log('WriteContract called');
     } catch (error) {
       console.error('Error creating commitment:', error);
-      alert('Transaction failed: ' + (error as Error).message);
+      toast.error('Transaction failed: ' + (error as Error).message);
       throw error;
     }
   };
