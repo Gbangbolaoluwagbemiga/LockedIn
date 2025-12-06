@@ -29,6 +29,9 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "tap": "^18.0.0",
+    "tape": "^5.8.0",
+    "why-is-node-running": "^2.2.2"
   }
 }
