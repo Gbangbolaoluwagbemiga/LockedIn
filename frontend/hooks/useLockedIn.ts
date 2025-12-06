@@ -81,15 +81,24 @@ export function useLockedIn() {
       console.log('Connected address:', address);
       console.log('Chain:', chain);
       
-      const result = createCommitment({
+      createCommitment({
         address: LOCKEDIN_CONTRACT_ADDRESS as `0x${string}`,
         abi: LOCKEDIN_ABI,
         functionName: 'createCommitment',
         args: [goal, BigInt(durationInDays)],
         value: parseEther(stakeAmount),
+        chainId: 42220,
+      }, {
+        onSuccess: (hash) => {
+          console.log('Transaction sent! Hash:', hash);
+        },
+        onError: (error) => {
+          console.error('Transaction error:', error);
+          alert('Transaction failed: ' + error.message);
+        },
       });
       
-      console.log('Transaction result:', result);
+      console.log('WriteContract called');
     } catch (error) {
       console.error('Error creating commitment:', error);
       alert('Transaction failed: ' + (error as Error).message);
