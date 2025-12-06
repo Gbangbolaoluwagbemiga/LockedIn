@@ -285,39 +285,3 @@ function FilteredCommitmentsList({
   );
 }
 
-function CommitmentCardWrapper({
-  commitmentId,
-  address,
-  onMarkComplete,
-  onUnstake,
-  isLoading,
-}: {
-  commitmentId: bigint;
-  address: string | undefined;
-  onMarkComplete: (id: bigint) => void;
-  onUnstake: (id: bigint) => void;
-  isLoading: boolean;
-}) {
-  const { commitment } = useCommitment(commitmentId);
-
-  if (!commitment) {
-    return (
-      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-800" />
-          <div className="h-4 w-1/2 rounded bg-gray-200 dark:bg-gray-800" />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <CommitmentCard
-      commitment={commitment}
-      onMarkComplete={onMarkComplete}
-      onUnstake={onUnstake}
-      isLoading={isLoading}
-      isOwner={commitment.user.toLowerCase() === address?.toLowerCase()}
-    />
-  );
-}
