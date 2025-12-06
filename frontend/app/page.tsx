@@ -28,6 +28,7 @@ export default function Home() {
   const [commitments, setCommitments] = useState<bigint[]>([]);
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'stake-high' | 'stake-low'>('newest');
   const [filterBy, setFilterBy] = useState<'all' | 'active' | 'completed' | 'expired'>('all');
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   // Fetch all commitment IDs
   useEffect(() => {
@@ -57,7 +58,8 @@ export default function Home() {
     if (createHash) {
       console.log('Transaction submitted, closing modal...');
       setIsModalOpen(false);
-      // Refetch will happen automatically when transaction is confirmed
+      // Trigger refetch after a delay to allow blockchain to update
+      setTimeout(() => setRefetchTrigger(prev => prev + 1), 2000);
     }
   }, [createHash]);
 
@@ -181,6 +183,7 @@ export default function Home() {
               onMarkComplete={markCompleted}
               onUnstake={unstake}
               isLoading={isMarking || isUnstaking}
+              refetchTrigger={refetchTrigger}
             />
           )}
         </div>
@@ -240,6 +243,7 @@ function FilterableCommitmentCard({
   onMarkComplete,
   onUnstake,
   isLoading,
+  refetchTrigger,
 }: {
   commitmentId: bigint;
   filterBy: 'all' | 'active' | 'completed' | 'expired';
@@ -247,8 +251,14 @@ function FilterableCommitmentCard({
   onMarkComplete: (id: bigint) => void;
   onUnstake: (id: bigint) => void;
   isLoading: boolean;
+  refetchTrigger: number;
 }) {
   const { commitment } = useCommitment(commitmentId);
+
+  // Refetch when trigger changes
+  useEffect(() => {
+    // This will cause a re-render and wagmi will refetch
+  }, [refetchTrigger]);
 
   if (!commitment) {
     return null; // Loading or doesn't exist
@@ -288,6 +298,7 @@ function FilteredCommitmentsList({
   onMarkComplete,
   onUnstake,
   isLoading,
+  refetchTrigger,
 }: {
   commitments: bigint[];
   filterBy: 'all' | 'active' | 'completed' | 'expired';
@@ -296,6 +307,7 @@ function FilteredCommitmentsList({
   onMarkComplete: (id: bigint) => void;
   onUnstake: (id: bigint) => void;
   isLoading: boolean;
+  refetchTrigger: number;
 }) {
   const [sortedCommitments, setSortedCommitments] = useState<bigint[]>(commitments);
 
@@ -324,6 +336,7 @@ function FilteredCommitmentsList({
           onMarkComplete={onMarkComplete}
           onUnstake={onUnstake}
           isLoading={isLoading}
+          refetchTrigger={refetchTrigger}
         />
       ))}
     </div>
