@@ -63,6 +63,24 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <Header />
 
+      {/* Loading Overlay */}
+      {isCreating && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="rounded-2xl bg-white dark:bg-gray-900 p-8 shadow-2xl">
+            <div className="flex flex-col items-center gap-4">
+              <svg className="h-12 w-12 animate-spin text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <div className="text-center">
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">Creating Commitment...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Please confirm the transaction in your wallet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="mb-12 text-center">
